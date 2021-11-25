@@ -1,15 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Calendar from '@/components/Calendar'
+import MonthlyCalendar from '@/components/MonthlyCalendar'
+import WeeklyCalendar from '@/components/WeeklyCalendar'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/monthly',
+      name: 'MonthlyCalendar',
+      component: MonthlyCalendar
+    },
+    {
       path: '/',
-      name: 'Calendar',
-      component: Calendar
+      name: 'WeeklyCalendar',
+      component: WeeklyCalendar
     }
   ]
 })
