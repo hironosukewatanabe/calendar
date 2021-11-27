@@ -7,20 +7,33 @@
       >
        {{ day }}
       </div>
+      <FullCalendar :options="calendarOptions" />
   </div>
 </template>
 <script>
 import moment from 'moment'
+import '@fullcalendar/core/vdom'
+import FullCalendar from '@fullcalendar/vue'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 export default {
+  components: {
+    FullCalendar
+  },
   data () {
     return {
-      currentDate: moment()
+      currentDate: moment(),
+      calendarOptions: {
+        plugins: [ dayGridPlugin, interactionPlugin ],
+        initialView: 'dayGridMonth'
+      }
     }
   },
   methods: {
     getStartDate () {
       let date = moment(this.currentDate)
-      date.startOf('month')
+      date.startOf('week')
       return date
     },
     getCalendar () {
@@ -28,9 +41,9 @@ export default {
       const insertDate = startDate
       let calendars = []
       for (let day = 0; day < 7; day++) {
-        calendars.push({
-          date: insertDate.get('date')
-        })
+        calendars.push(
+          insertDate.get('date')
+        )
         insertDate.add(1, 'days')
       }
       return calendars
