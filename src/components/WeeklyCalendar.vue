@@ -14,8 +14,7 @@
 import moment from 'moment'
 import '@fullcalendar/core/vdom'
 import FullCalendar from '@fullcalendar/vue'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
+import timeGridPlugin from '@fullcalendar/timegrid'
 
 export default {
   components: {
@@ -25,8 +24,8 @@ export default {
     return {
       currentDate: moment(),
       calendarOptions: {
-        plugins: [ dayGridPlugin, interactionPlugin ],
-        initialView: 'dayGridMonth'
+        plugins: [ timeGridPlugin ],
+        initialView: 'timeGridWeek'
       }
     }
   },
