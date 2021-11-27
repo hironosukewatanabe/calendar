@@ -1,19 +1,13 @@
 <template>
   <div>
       <h2> WeeklyCalendar </h2>
-      <div
-        v-for="(day, index) in calendars"
-        :key="index"
-      >
-       {{ day }}
-      </div>
       <FullCalendar :options="calendarOptions" />
   </div>
 </template>
 <script>
-import moment from 'moment'
 import '@fullcalendar/core/vdom'
 import FullCalendar from '@fullcalendar/vue'
+import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
 
 export default {
@@ -22,39 +16,29 @@ export default {
   },
   data () {
     return {
-      currentDate: moment(),
       calendarOptions: {
-        plugins: [ timeGridPlugin ],
-        initialView: 'timeGridWeek'
-      }
+        plugins: [ timeGridPlugin, interactionPlugin ],
+        initialView: 'timeGridWeek',
+        selectable: true,
+        selectMirror: true,
+        unselectAuto: false,
+        select: this.handleDateSelect,
+        events: []
+      },
+      events: []
     }
   },
   methods: {
-    getStartDate () {
-      let date = moment(this.currentDate)
-      date.startOf('week')
-      return date
-    },
-    getCalendar () {
-      let startDate = this.getStartDate()
-      const insertDate = startDate
-      let calendars = []
-      for (let day = 0; day < 7; day++) {
-        calendars.push(
-          insertDate.get('date')
-        )
-        insertDate.add(1, 'days')
-      }
-      return calendars
+    handleDateSelect: function (arg) {
+      console.log('events: ' + this.events)
+      this.events.push({
+        start: arg.startStr,
+        end: arg.endStr,
+        allDay: false
+      })
+      this.calendarOptions.events = this.events
+      console.log('select: ' + arg.startStr + arg.endStr)
     }
-  },
-  computed: {
-    calendars () {
-      return this.getCalendar()
-    }
-  },
-  mounted () {
-    console.log(this)
   }
 }
 
