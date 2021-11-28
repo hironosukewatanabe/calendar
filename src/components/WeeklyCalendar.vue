@@ -17,6 +17,7 @@ export default {
     return {
       calendarOptions: {
         locale: 'ja',
+        contentHeight: 600,
         plugins: [ timeGridPlugin, interactionPlugin ],
         initialView: 'timeGridWeek',
         selectable: true,
