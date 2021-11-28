@@ -1,7 +1,6 @@
 <template>
   <div>
-      <h2> WeeklyCalendar </h2>
-      <FullCalendar :options="calendarOptions" />
+      <FullCalendar id="calendar" ref="fullCalendar" :options="calendarOptions" />
   </div>
 </template>
 <script>
@@ -20,9 +19,12 @@ export default {
         plugins: [ timeGridPlugin, interactionPlugin ],
         initialView: 'timeGridWeek',
         selectable: true,
-        selectMirror: true,
+        selectMirror: false,
         unselectAuto: false,
+        editable: true,
+        eventOverlap: false,
         select: this.handleDateSelect,
+        dateClick: this.handleDateClick,
         events: []
       },
       events: []
@@ -30,14 +32,36 @@ export default {
   },
   methods: {
     handleDateSelect: function (arg) {
-      console.log('events: ' + this.events)
-      this.events.push({
-        start: arg.startStr,
-        end: arg.endStr,
-        allDay: false
-      })
+      let ArgStartMergedIdx = null
+      let isArgEndMergedIdx = null
+      for (var i = 0; i < this.events.length; i++) {
+        if (this.events[i].start === arg.endStr) {
+          this.events[i].start = arg.startStr
+          arg.endStr = this.events[i].end
+          if (ArgStartMergedIdx) {
+            this.events.splice(ArgStartMergedIdx, 1, {})
+          }
+          isArgEndMergedIdx = i
+        }
+        if (this.events[i].end === arg.startStr) {
+          this.events[i].end = arg.endStr
+          arg.startStr = this.events[i].start
+          if (isArgEndMergedIdx) {
+            this.events.splice(isArgEndMergedIdx, 1, {})
+          }
+          ArgStartMergedIdx = i
+        }
+      }
+      if (!ArgStartMergedIdx && !isArgEndMergedIdx) {
+        this.events.push({
+          start: arg.startStr,
+          end: arg.endStr,
+          allDay: false
+        })
+      }
       this.calendarOptions.events = this.events
-      console.log('select: ' + arg.startStr + arg.endStr)
+    },
+    handleDateClick: function () {
     }
   }
 }
