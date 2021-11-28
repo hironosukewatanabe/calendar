@@ -24,10 +24,11 @@ export default {
         editable: true,
         eventOverlap: false,
         select: this.handleDateSelect,
-        dateClick: this.handleDateClick,
+        eventClick: this.handleDateClick,
         events: []
       },
-      events: []
+      events: [],
+      id: 0
     }
   },
   methods: {
@@ -54,14 +55,21 @@ export default {
       }
       if (!ArgStartMergedIdx && !isArgEndMergedIdx) {
         this.events.push({
+          id: this.id,
           start: arg.startStr,
           end: arg.endStr,
           allDay: false
         })
+        this.id++
       }
       this.calendarOptions.events = this.events
     },
-    handleDateClick: function () {
+    handleDateClick: function (eventClickInfo) {
+      for (var i = 0; i < this.events.length; i++) {
+        if (eventClickInfo.event.id == this.events[i].id) {
+          this.events.splice(i, 1, {})
+        }
+      }
     }
   }
 }
