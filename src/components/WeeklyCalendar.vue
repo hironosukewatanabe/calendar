@@ -1,5 +1,7 @@
+/* eslint-disable eqeqeq */
 <template>
   <div>
+      <Schedule :schedule="events"/>
       <FullCalendar id="calendar" ref="fullCalendar" :options="calendarOptions" />
   </div>
 </template>
@@ -8,10 +10,12 @@ import '@fullcalendar/core/vdom'
 import FullCalendar from '@fullcalendar/vue'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import Schedule from '@/components/Schedule'
 
 export default {
   components: {
-    FullCalendar
+    FullCalendar,
+    Schedule
   },
   data () {
     return {
