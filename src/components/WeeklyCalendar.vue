@@ -2,7 +2,9 @@
 <template>
   <div>
       <Schedule :schedule="events"/>
-      <FullCalendar id="calendar" ref="fullCalendar" :options="calendarOptions" />
+      <div class="container">
+        <FullCalendar id="calendar" ref="fullCalendar" :options="calendarOptions" />
+      </div>
   </div>
 </template>
 <script>
