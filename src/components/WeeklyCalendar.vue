@@ -31,6 +31,7 @@ export default {
         unselectAuto: false,
         editable: true,
         eventOverlap: false,
+        scrollTimeReset: false,
         select: this.handleDateSelect,
         eventClick: this.handleDateClick,
         events: []
