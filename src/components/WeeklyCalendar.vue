@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 <template>
   <div>
-      <Schedule :schedule="events"/>
+      <Schedule :schedule_init="events"/>
       <div class="container">
         <FullCalendar id="calendar" ref="fullCalendar" :options="calendarOptions" />
       </div>
