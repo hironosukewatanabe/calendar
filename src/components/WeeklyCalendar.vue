@@ -41,32 +41,35 @@ export default {
     }
   },
   methods: {
-    handleDateSelect: function (arg) {
-      let ArgStartMergedIdx = null
-      let ArgEndMergedIdx = null
+    handleDateSelect: function (selectedEvent) {
+      let startMergeIdx = null
+      let endMergeIdx = null
       for (var i = 0; i < this.events.length; i++) {
-        if (this.events[i].start === arg.endStr) {
-          this.events[i].start = arg.startStr
-          arg.endStr = this.events[i].end
-          if (ArgStartMergedIdx) {
-            this.events.splice(ArgStartMergedIdx, 1, {})
+        let existingEvent = this.events[i]
+        if (!selectedEvent.startStr.length !== 10) {
+          if (existingEvent.start === selectedEvent.endStr) {
+            existingEvent.start = selectedEvent.startStr
+            selectedEvent.endStr = existingEvent.end
+            if (startMergeIdx) {
+              this.events.splice(startMergeIdx, 1, {})
+            }
+            endMergeIdx = i
           }
-          ArgEndMergedIdx = i
-        }
-        if (this.events[i].end === arg.startStr) {
-          this.events[i].end = arg.endStr
-          arg.startStr = this.events[i].start
-          if (ArgEndMergedIdx) {
-            this.events.splice(ArgEndMergedIdx, 1, {})
+          if (existingEvent.end === selectedEvent.startStr) {
+            existingEvent.end = selectedEvent.endStr
+            selectedEvent.startStr = existingEvent.start
+            if (endMergeIdx) {
+              this.events.splice(endMergeIdx, 1, {})
+            }
+            startMergeIdx = i
           }
-          ArgStartMergedIdx = i
         }
       }
-      if (!ArgStartMergedIdx && !ArgEndMergedIdx) {
+      if (!startMergeIdx && !endMergeIdx) {
         this.events.push({
           id: this.id,
-          start: arg.startStr,
-          end: arg.endStr,
+          start: selectedEvent.startStr,
+          end: selectedEvent.endStr,
           allDay: false
         })
         this.id++
@@ -75,7 +78,7 @@ export default {
     },
     handleDateClick: function (eventClickInfo) {
       for (var i = 0; i < this.events.length; i++) {
-        if (eventClickInfo.event.id == this.events[i].id) {
+        if (eventClickInfo.event.id === this.events[i].id.toString()) {
           this.events.splice(i, 1, {})
         }
       }
