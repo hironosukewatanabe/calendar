@@ -78,7 +78,7 @@ export default {
     },
     handleDateClick: function (eventClickInfo) {
       for (var i = 0; i < this.events.length; i++) {
-        if (eventClickInfo.event.id === this.events[i].id.toString()) {
+        if (Number(eventClickInfo.event.id) === this.events[i].id) {
           this.events.splice(i, 1, {})
         }
       }
