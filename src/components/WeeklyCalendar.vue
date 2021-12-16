@@ -43,7 +43,7 @@ export default {
   methods: {
     handleDateSelect: function (arg) {
       let ArgStartMergedIdx = null
-      let isArgEndMergedIdx = null
+      let ArgEndMergedIdx = null
       for (var i = 0; i < this.events.length; i++) {
         if (this.events[i].start === arg.endStr) {
           this.events[i].start = arg.startStr
@@ -51,18 +51,18 @@ export default {
           if (ArgStartMergedIdx) {
             this.events.splice(ArgStartMergedIdx, 1, {})
           }
-          isArgEndMergedIdx = i
+          ArgEndMergedIdx = i
         }
         if (this.events[i].end === arg.startStr) {
           this.events[i].end = arg.endStr
           arg.startStr = this.events[i].start
-          if (isArgEndMergedIdx) {
-            this.events.splice(isArgEndMergedIdx, 1, {})
+          if (ArgEndMergedIdx) {
+            this.events.splice(ArgEndMergedIdx, 1, {})
           }
           ArgStartMergedIdx = i
         }
       }
-      if (!ArgStartMergedIdx && !isArgEndMergedIdx) {
+      if (!ArgStartMergedIdx && !ArgEndMergedIdx) {
         this.events.push({
           id: this.id,
           start: arg.startStr,
