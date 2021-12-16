@@ -5,6 +5,7 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
 export default {
   components: {
   },
@@ -15,17 +16,17 @@ export default {
       let shapedSchedules = ''
 
       const shape = function (date) {
-        return ('0' + date.getHours()).slice(-2) +
+        return ('0' + date.hours()).slice(-2) +
                ':' +
-               ('0' + date.getMinutes()).slice(-2)
+               ('0' + date.minutes()).slice(-2)
       }
       for (var i = 0; i < schedule.length; i++) {
         if (schedule[i].start != null) {
-          const startDate = new Date(schedule[i].start)
-          const date = startDate.getMonth() + '/' + startDate.getDate()
-          const dayOfWeek = '（' + [ '日', '月', '火', '水', '木', '金', '土' ][startDate.getDay()] + '）'
+          const startDate = moment(schedule[i].start)
+          const date = startDate.month() + '/' + startDate.date()
+          const dayOfWeek = '（' + [ '日', '月', '火', '水', '木', '金', '土' ][startDate.day()] + '）'
           const shapedStartDate = shape(startDate)
-          const shapedEndDate = shape(new Date(schedule[i].end))
+          const shapedEndDate = shape(moment(schedule[i].end))
           let shapedSchedule = date + dayOfWeek + shapedStartDate + ' 〜 ' + shapedEndDate + '\n'
           shapedSchedules += shapedSchedule
         }
@@ -38,20 +39,20 @@ export default {
       let schedule = JSON.parse(JSON.stringify(val))
       let shapedSchedules = ''
 
-      schedule.sort(function (a, b) { return new Date(a.start) - new Date(b.start) })
+      schedule.sort(function (a, b) { return moment(a.start) - moment(b.start) })
 
       const shape = function (date) {
-        return ('0' + date.getHours()).slice(-2) +
+        return ('0' + date.hours()).slice(-2) +
                ':' +
-               ('0' + date.getMinutes()).slice(-2)
+               ('0' + date.minutes()).slice(-2)
       }
       for (var i = 0; i < schedule.length; i++) {
         if (schedule[i].start != null) {
-          const startDate = new Date(schedule[i].start)
-          const date = startDate.getMonth() + '/' + startDate.getDate()
-          const dayOfWeek = '（' + [ '日', '月', '火', '水', '木', '金', '土' ][startDate.getDay()] + '）'
+          const startDate = moment(schedule[i].start)
+          const date = startDate.month() + '/' + startDate.date()
+          const dayOfWeek = '（' + [ '日', '月', '火', '水', '木', '金', '土' ][startDate.day()] + '）'
           const shapedStartDate = shape(startDate)
-          const shapedEndDate = shape(new Date(schedule[i].end))
+          const shapedEndDate = shape(moment(schedule[i].end))
           let shapedSchedule = date + dayOfWeek + shapedStartDate + ' 〜 ' + shapedEndDate + '\n'
           shapedSchedules += shapedSchedule
         }
