@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 <template>
   <div>
-      <Schedule :schedule_init="events"/>
+      <Schedule :events="schedules.events"/>
       <div class="container">
         <FullCalendar id="calendar" ref="fullCalendar" :options="calendarOptions" />
       </div>
@@ -36,22 +36,24 @@ export default {
         eventClick: this.handleDateClick,
         events: []
       },
-      events: [],
-      id: 0
+      schedules: {
+        events: [],
+        id: 0
+      }
     }
   },
   methods: {
     handleDateSelect: function (selectedEvent) {
       let startMergeIdx = null
       let endMergeIdx = null
-      for (var i = 0; i < this.events.length; i++) {
-        let existingEvent = this.events[i]
+      for (var i = 0; i < this.schedules.events.length; i++) {
+        let existingEvent = this.schedules.events[i]
         if (!selectedEvent.startStr.length !== 10) {
           if (existingEvent.start === selectedEvent.endStr) {
             existingEvent.start = selectedEvent.startStr
             selectedEvent.endStr = existingEvent.end
             if (startMergeIdx) {
-              this.events.splice(startMergeIdx, 1, {})
+              this.$delete(this.schedules.events, startMergeIdx)
             }
             endMergeIdx = i
           }
@@ -59,27 +61,27 @@ export default {
             existingEvent.end = selectedEvent.endStr
             selectedEvent.startStr = existingEvent.start
             if (endMergeIdx) {
-              this.events.splice(endMergeIdx, 1, {})
+              this.$delete(this.schedules.events, endMergeIdx)
             }
             startMergeIdx = i
           }
         }
       }
       if (!startMergeIdx && !endMergeIdx) {
-        this.events.push({
-          id: this.id,
+        this.schedules.events.splice(0, 0, {
+          id: this.schedules.id,
           start: selectedEvent.startStr,
           end: selectedEvent.endStr,
           allDay: false
         })
-        this.id++
+        this.$set(this.schedules, 'id', this.schedules.id + 1)
       }
-      this.calendarOptions.events = this.events
+      this.calendarOptions.events = this.schedules.events
     },
     handleDateClick: function (eventClickInfo) {
-      for (var i = 0; i < this.events.length; i++) {
-        if (Number(eventClickInfo.event.id) === this.events[i].id) {
-          this.events.splice(i, 1, {})
+      for (var i = 0; i < this.schedules.events.length; i++) {
+        if (Number(eventClickInfo.event.id) === this.schedules.events[i].id) {
+          this.schedules.events.splice(i, 1, {})
         }
       }
     }
