@@ -38,7 +38,7 @@ export default {
       },
       schedules: {
         events: [],
-        id: 0
+        id: 1
       }
     }
   },
@@ -52,7 +52,7 @@ export default {
           if (existingEvent.start === selectedEvent.endStr) {
             existingEvent.start = selectedEvent.startStr
             selectedEvent.endStr = existingEvent.end
-            if (startMergeIdx) {
+            if (startMergeIdx !== null) {
               this.$delete(this.schedules.events, startMergeIdx)
             }
             endMergeIdx = i
@@ -60,14 +60,14 @@ export default {
           if (existingEvent.end === selectedEvent.startStr) {
             existingEvent.end = selectedEvent.endStr
             selectedEvent.startStr = existingEvent.start
-            if (endMergeIdx) {
+            if (endMergeIdx !== null) {
               this.$delete(this.schedules.events, endMergeIdx)
             }
             startMergeIdx = i
           }
         }
       }
-      if (!startMergeIdx && !endMergeIdx) {
+      if (startMergeIdx === null && endMergeIdx === null) {
         this.schedules.events.splice(0, 0, {
           id: this.schedules.id,
           start: selectedEvent.startStr,
