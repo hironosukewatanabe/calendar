@@ -10,30 +10,6 @@ export default {
   components: {
   },
   props: ['events'],
-  computed: {
-    rehsapedSchedule: function () {
-      let schedule = this.schedule
-      let shapedSchedules = ''
-
-      const shape = function (date) {
-        return ('0' + date.hours()).slice(-2) +
-               ':' +
-               ('0' + date.minutes()).slice(-2)
-      }
-      for (var i = 0; i < schedule.length; i++) {
-        if (schedule[i].start != null) {
-          const startDate = moment(schedule[i].start)
-          const date = startDate.month() + '/' + startDate.date()
-          const dayOfWeek = '（' + [ '日', '月', '火', '水', '木', '金', '土' ][startDate.day()] + '）'
-          const shapedStartDate = shape(startDate)
-          const shapedEndDate = shape(moment(schedule[i].end))
-          let shapedSchedule = date + dayOfWeek + shapedStartDate + ' 〜 ' + shapedEndDate + '\n'
-          shapedSchedules += shapedSchedule
-        }
-      }
-      return shapedSchedules
-    }
-  },
   watch: {
     events: {
       handler: function (val) {
