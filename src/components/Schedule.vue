@@ -26,7 +26,7 @@ export default {
         for (var i = 0; i < schedule.length; i++) {
           if (schedule[i].start != null) {
             const startDate = moment(schedule[i].start)
-            const date = startDate.month() + '/' + startDate.date()
+            const date = startDate.format('M') + '/' + startDate.date()
             const dayOfWeek = '（' + [ '日', '月', '火', '水', '木', '金', '土' ][startDate.day()] + '）'
             const shapedStartDate = shape(startDate)
             const shapedEndDate = shape(moment(schedule[i].end))
