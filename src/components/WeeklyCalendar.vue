@@ -30,7 +30,7 @@ export default {
         selectMirror: false,
         unselectAuto: false,
         editable: true,
-        eventOverlap: false,
+        eventOverlap: () => false,
         eventResizableFromStart: true,
         scrollTimeReset: false,
         select: this.handleDateSelect,
