@@ -13,6 +13,7 @@ import FullCalendar from '@fullcalendar/vue'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import Schedule from '@/components/Schedule'
+import moment from 'moment'
 
 export default {
   components: {
@@ -30,7 +31,6 @@ export default {
         selectMirror: false,
         unselectAuto: false,
         editable: true,
-        eventOverlap: () => false,
         eventResizableFromStart: true,
         scrollTimeReset: false,
         select: this.handleDateSelect,
@@ -50,7 +50,11 @@ export default {
       for (var i = 0; i < this.schedules.events.length; i++) {
         let existingEvent = this.schedules.events[i]
         if (!selectedEvent.startStr.length !== 10) {
-          if (existingEvent.start === selectedEvent.endStr) {
+          const existingStart = moment(existingEvent.start)
+          const existingEnd = moment(existingEvent.end)
+          const selectedStart = moment(selectedEvent.startStr)
+          const selectedEnd = moment(selectedEvent.endStr)
+          if (existingStart.isSame(selectedEnd)) {
             existingEvent.start = selectedEvent.startStr
             selectedEvent.endStr = existingEvent.end
             if (startMergeIdx !== null) {
@@ -58,7 +62,7 @@ export default {
             }
             endMergeIdx = i
           }
-          if (existingEvent.end === selectedEvent.startStr) {
+          if (existingEnd.isSame(selectedStart)) {
             existingEvent.end = selectedEvent.endStr
             selectedEvent.startStr = existingEvent.start
             if (endMergeIdx !== null) {
